@@ -109,7 +109,9 @@ const CATALOG = {"store": "Gmail Store", "currency": "VNĐ", "max_qty": 1000, "o
 (function () {
   "use strict";
   const tg = window.Telegram && window.Telegram.WebApp;
-  const inTelegram = !!(tg && tg.initData);
+  // A Mini App opened from a reply-keyboard button gets NO initData (that is
+  // only for inline/menu launches), so detect Telegram by its platform instead.
+  const inTelegram = !!(tg && tg.platform && tg.platform !== "unknown" && typeof tg.sendData === "function");
   if (tg) { try { tg.ready(); tg.expand(); } catch (e) {} }
 
   const params = new URLSearchParams(location.search);
